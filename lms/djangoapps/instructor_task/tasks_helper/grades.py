@@ -634,10 +634,10 @@ class CourseGradeReport(object):
             is_whitelisted,
             bulk_certs.certificates_by_user.get(user.id),
         )
-        TASK_LOG.info(
-            u'Student certificate eligibility: %s '
-            u'(user=%s, course_id=%s, grade_percent=%s letter_grade=%s gradecutoffs=%s, allow_certificate=%s, '
-            u'is_whitelisted=%s)',
+        TASK_LOG.debug(
+            'Student certificate eligibility: %s '
+            '(user=%s, course_id=%s, grade_percent=%s letter_grade=%s gradecutoffs=%s, allow_certificate=%s, '
+            'is_whitelisted=%s)',
             certificate_info[0],
             user,
             context.course_id,
