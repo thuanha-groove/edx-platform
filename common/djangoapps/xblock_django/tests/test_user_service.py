@@ -112,3 +112,12 @@ class UserServiceTestCase(TestCase):
         )
 
         self.assertEqual(anonymous_user_id, anon_user_id)
+
+    def test_external_id(self):
+        """
+        Tests that external ids differ based on type.
+        """
+        django_user_service = DjangoXBlockUserService(self.user, user_is_staff=True)
+        ext_id1 = django_user_service.get_external_user_id('test1')
+        ext_id2 = django_user_service.get_external_user_id('test2')
+        assert ext_id1 != ext_id2
