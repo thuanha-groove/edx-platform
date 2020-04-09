@@ -198,6 +198,25 @@ class CourseModeViewTest(CatalogIntegrationMixin, UrlResetMixin, ModuleStoreTest
         else:
             self.assertNotContains(response, "Credit")
 
+    @patch('openedx.features.enterprise_support.utils.is_enterprise_learner')
+    @patch('common.djangoapps.course_modes.helpers.get_course_final_price')
+    def test_display_after_discounted_price(self, mock_get_course_final_price, mock_is_enterprise_learner):
+        # Create the course modes
+        CourseModeFactory.create(mode_slug='audit', course_id=self.course.id)
+        CourseModeFactory.create(mode_slug='verified', course_id=self.course.id, sku='dummy')
+
+        CourseEnrollmentFactory(
+            is_active=True,
+            course_id=self.course.id,
+            user=self.user
+        )
+
+        mock_is_enterprise_learner.return_value = True
+        mock_get_course_final_price.return_value = 0.0
+        url = reverse('course_modes_choose', args=[six.text_type(self.course.id)])
+        response = self.client.get(url)
+        self.assertContains(response, "Congratulations!  You are now enrolled in")
+
     @httpretty.activate
     @ddt.data(True, False)
     def test_congrats_on_enrollment_message(self, create_enrollment):
