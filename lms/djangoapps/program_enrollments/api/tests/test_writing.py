@@ -345,6 +345,10 @@ class WriteProgramCourseEnrollmentTest(EnrollmentTestMixin):
             self.course_enrollment_request('learner-1'),
             self.course_enrollment_request('learner-1'),
         ]
+        assert False # TODO
+
+    def test_learner_not_in_program(self):
+        assert False # TODO
 
     def test_create_enrollments_and_assign_staff(self):
         """
