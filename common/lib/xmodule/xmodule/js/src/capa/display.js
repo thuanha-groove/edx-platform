@@ -523,7 +523,7 @@
             fd = new FormData();
 
             // Sanity checks on submission
-            maxFileSize = 4 * 1000 * 1000;
+            maxFileSize = 20 * 1000 * 1000;
             fileTooLarge = false;
             fileNotSelected = false;
             requiredFilesNotSubmitted = false;
@@ -591,7 +591,7 @@
                 );
             }
             errorHtml = edx.HtmlUtils.interpolateHtml(edx.HtmlUtils.HTML('<ul>{errors}</ul>'), {errors: errorHtml});
-            this.gentle_alert(errorHtml);
+            this.gentle_alert(errorHtml.toString());
             abortSubmission = fileTooLarge || fileNotSelected || unallowedFileSubmitted || requiredFilesNotSubmitted;
             if (abortSubmission) {
                 window.clearTimeout(timeoutId);
@@ -615,6 +615,9 @@
                             that.gentle_alert(response.success);
                         }
                         return Logger.log('problem_graded', [that.answers, response.contents], that.id);
+                    },
+                    error: function(response) {
+                        that.gentle_alert(response.responseJSON.success);
                     }
                 };
                 $.ajaxWithPrefix('' + this.url + '/problem_check', settings);
